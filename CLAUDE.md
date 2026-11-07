@@ -30,11 +30,14 @@ invoices the LLM drafts escalating reminders, which also need user approval.
 - Keep changes small. Explain what you changed after each task.
 - Write tests for money-moving paths (invoice create/send, webhook handling).
 
-## Roadmap (one day at a time; only work on the current day's goal)
-1. PayPal sandbox: create + send one invoice via API
-2. LLM extraction: free text -> validated invoice draft
-3. Approval UI + send flow
-4. Webhooks + live status tracking
-5. Collections logic: overdue detection, reminder drafts, flag-for-human
-6. Seed demo data, polish, tests, deploy
-7. README, demo video, submit
+## Roadmap
+The app was built in one pass. See PROGRESS.md for current status and next steps.
+1. Scaffold, database, config
+2. PayPal clients, capability check, Invoicing and Orders providers
+3. LLM wrapper, extraction, agent tools
+4. Approval and invoice flows
+5. Webhooks, reconciler, collections
+6. Frontend
+7. Seed data and tests
+8. Docs and Render config
+9. Deploy, demo video, submit (human)
