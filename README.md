@@ -66,7 +66,7 @@ You need Node.js 20.12 or newer, plus the credentials described below.
 ### Windows (PowerShell)
 
 ```powershell
-git clone <your-repo-url> chaser
+git clone https://github.com/mridulcodes15/Chaser.git chaser
 cd chaser
 npm install
 Copy-Item .env.example .env
@@ -79,7 +79,7 @@ npm start
 ### macOS / Linux
 
 ```bash
-git clone <your-repo-url> chaser
+git clone https://github.com/mridulcodes15/Chaser.git chaser
 cd chaser
 npm install
 cp .env.example .env
