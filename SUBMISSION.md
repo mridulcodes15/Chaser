@@ -4,6 +4,29 @@
 
 Freelancers lose money twice: once on the admin of invoicing, and again on the awkward job of chasing late payers. Chaser is an AI agent that does both, while a person stays in charge of anything that goes out.
 
+## Live Demo
+
+**URL:** https://chaser-9d4o.onrender.com
+
+**Login:** the app is protected by a basic auth popup.
+- Username: anything (not checked)
+- Password: `chaser-demo-2026`
+
+This is a sandbox-only demo — no real PayPal accounts or real money are
+involved — so sharing the password here is safe.
+
+**Note on PayPal mode:** this sandbox app doesn't have Invoicing permission
+enabled, so the app automatically falls back to PayPal Orders with its own
+payment page. You'll see a banner in the dashboard confirming this. This is
+expected, automatic behavior — not an error — and demonstrates the app's
+capability detection and graceful fallback.
+
+**To see the full payment flow:** open any invoice from the Invoices page,
+click **Open payment link**, and complete checkout using a PayPal sandbox
+buyer account.
+
+Full setup, architecture, and local run instructions: see [README.md](README.md).
+
 ### Features and functionality
 
 - **Plain-language invoicing:** type a one-liner or paste a messy email or contract, and the agent extracts a structured draft. If the amount or client is missing, it asks.
