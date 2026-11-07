@@ -90,6 +90,12 @@ npm start
 ```
 
 Then open <http://localhost:3000>.
+## Accessing the live demo
+
+The app is protected by a simple login (shown as a browser popup):
+- **Username:** anything — this field isn't checked, type whatever you like
+- **Password:** `chaser-demo-2026` (also listed here for judges; this protects
+  a sandbox-only demo, so there's no real risk in sharing it)
 
 At minimum, set `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `GROQ_API_KEY` and `GROQ_MODEL` in `.env`.
 
