@@ -59,6 +59,25 @@ flowchart LR
 - **Webhooks:** every event must pass PayPal's verify-webhook-signature API, and processed event IDs are stored so repeats do nothing.
 - **Overdue status:** always calculated from the due date, never taken from a webhook.
 
+## Live demo
+
+**App:** https://chaser-9d4o.onrender.com
+
+The app is protected by a basic login (shown as a browser popup):
+- **Username:** anything — this field isn't checked, type whatever you like
+- **Password:** `chaser-demo-2026`
+
+This protects a sandbox-only demo (no real money, no real PayPal accounts),
+so sharing the password here is safe.
+
+To see the full payment flow: open any invoice, click **Open payment link**,
+and log in with a PayPal sandbox buyer account to complete a test payment.
+
+> **Note:** the app automatically detects whether PayPal Invoicing is
+> available on the connected sandbox app. If not, it falls back to
+> PayPal Orders with its own payment page — you'll see a banner explaining
+> this. This is expected behavior, not an error.
+
 ## Run it locally
 
 You need Node.js 20.12 or newer, plus the credentials described below.
@@ -90,13 +109,9 @@ npm start
 ```
 
 Then open <http://localhost:3000>.
-## Accessing the live demo
-
-The app is protected by a simple login (shown as a browser popup):
+The app is protected by a basic login (shown as a browser popup):
 - **Username:** anything — this field isn't checked, type whatever you like
-- **Password:** `chaser-demo-2026` (also listed here for judges; this protects
-  a sandbox-only demo, so there's no real risk in sharing it)
-
+- **Password:** `chaser-demo-2026`
 At minimum, set `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `GROQ_API_KEY` and `GROQ_MODEL` in `.env`.
 
 ### Development mode
