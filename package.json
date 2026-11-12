@@ -1,0 +1,45 @@
+{
+  "name": "chaser",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI invoicing and collections agent for freelancers, built on PayPal (sandbox).",
+  "type": "module",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"tsx watch src/server.ts\" \"vite --config web/vite.config.ts\"",
+    "build": "tsc -p tsconfig.build.json && vite build --config web/vite.config.ts",
+    "start": "node dist/server/server.js",
+    "test": "vitest run",
+    "seed": "tsx src/seed-cli.ts",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p web/tsconfig.json",
+    "day1": "tsx scripts/day1-invoice.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/supertest": "^7.2.1",
+    "@vitejs/plugin-react": "^6.2.1",
+    "concurrently": "^10.0.6",
+    "lucide-react": "^1.70.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}

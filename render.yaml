@@ -1,0 +1,36 @@
+# One web service serves the API and the built frontend.
+# SQLite lives on the instance's local disk, which is EPHEMERAL on Render: the database
+# is lost on each deploy or restart. SEED_DEMO=true re-creates the demo data on boot.
+services:
+  - type: web
+    name: chaser
+    runtime: node
+    plan: free
+    # NODE_ENV=production skips dev dependencies by default, but the build needs them.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "24"
+      - key: SEED_DEMO
+        value: "true"
+      - key: PAYMENT_PROVIDER
+        value: auto
+      - key: LLM_PROVIDER
+        value: groq
+      # sync: false means Render asks for these in its dashboard. Nothing secret is stored here.
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        sync: false
