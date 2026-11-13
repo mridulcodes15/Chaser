@@ -6,7 +6,9 @@ You describe the work in plain language or paste an email. Chaser's agent drafts
 
 **PayPal sandbox only.** The sandbox URL is hard-coded, and the app refuses to start if pointed anywhere else.
 
-## Live demo - https://chaser-9d4o.onrender.com/
+## Live demo 
+
+https://chaser-9d4o.onrender.com/
 
 There is no login. Open the site and pick one of the three entry points on the landing page:
 
