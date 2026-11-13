@@ -55,7 +55,16 @@ Live testing found two model problems the mocks couldn't, both fixed in the prom
 **Landing page (2026-11-13, frontend only):**
 - New marketing page at `/` (`web/src/pages/Landing.tsx`, `web/src/landing.css`). The dashboard moved to `/dashboard`; the only change to existing code is the router in `web/src/App.tsx`. No backend file changed.
 - Checked at desktop and phone width, plus an automated sweep of `/` and `/dashboard` at 8 widths: no overflow. Scroll reveals use IntersectionObserver with a scroll fallback; the ticker and reveals are off under reduced motion.
-- Known gap: with `ADMIN_PASSWORD` set, `/` still prompts for the password, because `isPublicPath` in `src/app.ts` doesn't list it. That's a one-line backend change, left alone on purpose.
+- The password gate that blocked `/` was removed on 2026-11-13, see below.
+
+**Landing page restructure and login removal (2026-11-13):**
+- The landing page shows product content only: no invoice numbers, amounts, client names or queue preview. The hero's approval-card mock was replaced by a who-does-what diagram.
+- Three entry points after "How it works": **Continue as judge** (prominent, one click to `/dashboard`), and cosmetic **Sign up** and **Log in** forms that route to `/dashboard` on submit. They store and check nothing, and say so on the page.
+- A collapsed **PayPal sandbox buyer login** panel with copy buttons, so judges can finish checkout.
+- Motion: one-time hero entrance, scroll reveals (IntersectionObserver plus a scroll fallback), hover lifts on cards, underline-grow nav links, the paused-on-hover ticker. All off under reduced motion.
+- The `ADMIN_PASSWORD` gate was removed from `src/app.ts` (and its startup warning from `src/server.ts`). No route asks for a password. `config.ts`, `.env.example` and `render.yaml` still mention the variable; it's read but never enforced.
+- Tests no longer read the real `.env`: `vitest.config.ts` points dotenv at a file that doesn't exist, which fixed the production dev-tool test. The three password tests became one test that no route asks for a password. 150 tests pass.
+- Files: `web/src/pages/Landing.tsx`, `web/src/landing.css`, `src/app.ts`, `src/server.ts`, `vitest.config.ts`, `test/flows.test.ts`, `README.md`, `SUBMISSION.md`, `PROGRESS.md`.
 
 ## Unit-tested only, NOT run for real
 
@@ -64,14 +73,13 @@ Live testing found two model problems the mocks couldn't, both fixed in the prom
 - **Refund events.**
 - **Rate limit (429) handling** against real Groq.
 - **Render deployment.** `render.yaml` hasn't been deployed.
-- **`ADMIN_PASSWORD`:** tested with mocks, not in a browser.
 - **`npm run dev`:** not run. Only the built app was.
 
 ## Next, needs the human
 
 1. Add a LICENSE file. The repo doesn't have one, and the hackathon requires it.
 2. Optional: set up a webhook and `PAYPAL_WEBHOOK_ID`.
-3. Deploy to Render, set `ADMIN_PASSWORD`, record the demo and submit.
+3. Deploy to Render, record the demo and submit.
 
 ## Could not verify from docs
 

@@ -23,6 +23,12 @@ Freelancers lose money twice: once on the admin of invoicing, and again on the a
   - A payment only counts if the amount matches.
 - **Copyable messages:** Chaser produces a link and message for you to share. It doesn't send email or SMS.
 
+## Live demo
+
+No password, no account. On the landing page, **Continue as judge** is the recommended path: one click opens the seeded demo with full functionality. The **Sign up** and **Log in** cards are cosmetic forms that show the shape of the real product and open the same demo.
+
+To finish a test payment, click **Pay with PayPal** on a sent invoice. PayPal's sandbox then asks for a buyer account: open the **PayPal sandbox buyer login** panel on the landing page and copy the email and password from there. It's a sandbox account with play money only.
+
 ## Tools used
 
 | Tool | How it's used |

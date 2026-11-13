@@ -6,6 +6,15 @@ You describe the work in plain language or paste an email. Chaser's agent drafts
 
 **PayPal sandbox only.** The sandbox URL is hard-coded, and the app refuses to start if pointed anywhere else.
 
+## Live demo
+
+There is no login. Open the site and pick one of the three entry points on the landing page:
+
+- **Continue as judge** (recommended): one click, no account, no fields. It opens the seeded demo with clients and invoices in every state. This is the fastest path, with zero setup.
+- **Sign up** and **Log in**: cosmetic forms that show the shape of the real product. They store and check nothing, and submitting either one opens the same demo. Real accounts are out of scope for the hackathon build.
+
+When you click **Pay with PayPal** on an invoice, PayPal's sandbox asks for a buyer account. The landing page has a collapsible **PayPal sandbox buyer login** panel with the email and password to use, each with a copy button. It's a sandbox test account with play money only.
+
 ## How it works
 
 1. **Describe it.** Type `Bill Acme $2,400 for March brand work, net 15`, or paste a messy email or contract.
@@ -89,9 +98,7 @@ npm run seed
 npm start
 ```
 
-Then open <http://localhost:3000>. The landing page is at `/`, and **Enter demo** takes you to the app at `/dashboard`.
-
-If `ADMIN_PASSWORD` is set, the browser asks for it on the landing page too, because the server's public paths are only the buyer pages, webhooks and health check.
+Then open <http://localhost:3000>. The landing page is at `/`, and any of its three entry points opens the app at `/dashboard`. No password is needed anywhere.
 
 At minimum, set `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `GROQ_API_KEY` and `GROQ_MODEL` in `.env`.
 
@@ -116,7 +123,7 @@ Create a key at <https://console.groq.com/keys> and choose a model from <https:/
 1. On the **Agent** page, send `Bill Acme $25 for a test, net 15`.
 2. Click **Approve and send** on the draft.
 3. Click **Open payment link**, or paste the copied link into a private browser window.
-4. Click **Pay with PayPal** and log in as your sandbox **Personal** account. Find its password under Sandbox Accounts.
+4. Click **Pay with PayPal** and log in as a sandbox **Personal** account. The landing page's sandbox buyer login panel has one ready to copy, or use your own from Sandbox Accounts.
 5. Approve the payment. You return to a success page, and the invoice shows as paid.
 
 Seeded demo invoices are local records and can't be paid. Use one created through the agent.
@@ -151,7 +158,7 @@ PayPal's docs say simulator events can't be verified through the signature API, 
 | `PORT` | No | `3000` | Server port |
 | `PUBLIC_BASE_URL` | When hosted | `http://localhost:PORT` | Used in pay links and PayPal return URLs |
 | `RENDER_EXTERNAL_URL` | No | | Set by Render, and used if `PUBLIC_BASE_URL` isn't set |
-| `ADMIN_PASSWORD` | When hosted | | HTTP Basic password for the dashboard, with any username |
+| `ADMIN_PASSWORD` | No | | Not used. The demo has no login; the value is read but never enforced. |
 | `DATABASE_PATH` | No | `data/chaser.sqlite` | SQLite file |
 | `NODE_ENV` | No | `development` | `production` disables dev tools |
 | `SEED_DEMO` | No | | `true` seeds demo data when the database is empty |
@@ -178,7 +185,7 @@ PayPal's docs say simulator events can't be verified through the signature API, 
 
 1. Push the repo to GitHub.
 2. In Render, choose **New > Blueprint** and select the repo. Render reads `render.yaml`.
-3. Enter the values it asks for: `ADMIN_PASSWORD`, `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`, `GROQ_API_KEY`, `GROQ_MODEL`.
+3. Enter the values it asks for: `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`, `GROQ_API_KEY`, `GROQ_MODEL`. If it also asks for `ADMIN_PASSWORD`, leave it blank: it isn't enforced.
 4. After it deploys, point the sandbox webhook at `https://<your-app>.onrender.com/api/webhooks/paypal`.
 
 **SQLite is ephemeral on Render.** The database is lost on each deploy or restart, and `SEED_DEMO=true` re-creates the demo data. Invoices created through the agent don't survive a restart. This suits a demo, but not production.
@@ -225,7 +232,7 @@ I checked the official docs before coding, but these details weren't visible on 
 - **Thresholds and currencies:** `LARGE_AMOUNT_THRESHOLD` compares the raw number, with no currency conversion.
 - **Amount check:** it needs digits, so "two thousand dollars" makes the agent ask you to confirm. It proves a number was in your text, not that it's the right one, which is why a person still approves every draft.
 - **Dates:** overdue days are calculated in UTC, so they can change at a different time from your local midnight.
-- **Access:** `ADMIN_PASSWORD` is one shared password, not user accounts. If you don't set it, the dashboard has no login.
+- **Access:** there is no login at all. Anyone with the URL can approve and send sandbox invoices, which is fine for a sandbox demo and not for real use. The Sign up and Log in forms are cosmetic.
 - **Public checkout:** `/api/pay/*` has no rate limiting.
 
 ## License

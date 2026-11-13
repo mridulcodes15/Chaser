@@ -1,5 +1,5 @@
 import request from "supertest";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { createApp } from "../src/app.js";
 import { db } from "../src/db.js";
 import { reconcileAll } from "../src/jobs.js";
@@ -671,31 +671,17 @@ describe("dev tool", () => {
   });
 });
 
-describe("access control", () => {
-  beforeEach(() => {
+describe("no login for the demo", () => {
+  it("never asks for a password, even when ADMIN_PASSWORD is set", async () => {
     process.env.ADMIN_PASSWORD = "hunter2";
-  });
-  const basic = (password: string) => `Basic ${Buffer.from(`admin:${password}`).toString("base64")}`;
-
-  it("blocks approvals without the password", async () => {
-    mockFetch({});
+    mockFetch(orderRoutes);
     const { approvalId, invoice } = draft();
+    expect((await request(app()).get("/api/invoices")).status).toBe(200);
+    expect((await request(app()).get("/api/approvals")).status).toBe(200);
     const res = await json(request(app()).post(`/api/approvals/${approvalId}/approve`), {
       revision: invoice.revision,
     });
-    expect(res.status).toBe(401);
-    expect(getApproval(approvalId)!.status).toBe("pending");
-    expect((await request(app()).get("/api/invoices").set("Authorization", basic("wrong"))).status).toBe(401);
-  });
-
-  it("allows the dashboard with the right password", async () => {
-    mockFetch({});
-    expect((await request(app()).get("/api/invoices").set("Authorization", basic("hunter2"))).status).toBe(200);
-  });
-
-  it("leaves buyer pages, health and webhooks reachable", async () => {
-    mockFetch({});
-    const { invoice } = draft();
+    expect(res.status).toBe(200);
     expect((await request(app()).get(`/api/pay/${invoice.public_id}`)).status).toBe(200);
     expect((await request(app()).get("/healthz")).status).toBe(200);
     expect((await request(app()).post("/api/webhooks/paypal").send("{}")).status).toBe(400);

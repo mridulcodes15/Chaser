@@ -17,8 +17,5 @@ void refreshProviderState().then((state) => {
 
 createApp().listen(config.PORT, () => {
   console.log(`Chaser is running on port ${config.PORT} (public URL: ${config.publicBaseUrl}). PayPal sandbox only.`);
-  if (!config.ADMIN_PASSWORD) {
-    console.log("ADMIN_PASSWORD is not set, so the dashboard has no password. Set it before deploying.");
-  }
 });
 startJobs();

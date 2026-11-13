@@ -1,4 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import express, { type NextFunction, type Request, type Response } from "express";
@@ -41,38 +40,6 @@ import {
   type ApprovalRow,
   type InvoiceFilter,
 } from "./store.js";
-
-/** Pages and calls a buyer or PayPal must reach without the admin password. */
-function isPublicPath(path: string): boolean {
-  return (
-    path === "/healthz" ||
-    path === "/api/webhooks/paypal" ||
-    path.startsWith("/pay/") ||
-    path.startsWith("/api/pay/") ||
-    path.startsWith("/assets/") ||
-    path === "/favicon.svg"
-  );
-}
-
-function safeEqual(a: string, b: string): boolean {
-  const left = Buffer.from(a);
-  const right = Buffer.from(b);
-  return left.length === right.length && timingSafeEqual(left, right);
-}
-
-/** With ADMIN_PASSWORD set, everything but the public paths needs HTTP Basic auth. */
-function adminAuth(req: Request, res: Response, next: NextFunction): void {
-  const { ADMIN_PASSWORD } = getConfig();
-  if (!ADMIN_PASSWORD || isPublicPath(req.path)) return next();
-  const [scheme, encoded] = (req.headers.authorization ?? "").split(" ");
-  if (scheme === "Basic" && encoded) {
-    const decoded = Buffer.from(encoded, "base64").toString();
-    const password = decoded.slice(decoded.indexOf(":") + 1);
-    if (safeEqual(password, ADMIN_PASSWORD)) return next();
-  }
-  res.setHeader("WWW-Authenticate", 'Basic realm="Chaser", charset="UTF-8"');
-  res.status(401).send("Password required.");
-}
 
 /**
  * A plain cross-site form can't send JSON, so requiring it stops another website
@@ -118,7 +85,7 @@ const chatBody = z.object({
 export function createApp(): express.Express {
   const app = express();
   app.disable("x-powered-by");
-  app.use(adminAuth);
+  // No login for the hackathon demo. ADMIN_PASSWORD is read by config but not enforced.
 
   app.get("/healthz", (_req, res) => {
     res.json({ ok: true });
